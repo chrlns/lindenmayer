@@ -1,0 +1,51 @@
+<?xml version='1.0' ?>
+<lindenmayer>
+  <grammar>
+    <symbols>
+      <symbol type='variable'>A</symbol>
+      <symbol type='variable'>B</symbol>
+      <symbol type='terminal'>f</symbol>
+      <symbol type='terminal'>g</symbol>
+      <symbol type='terminal'>+</symbol>
+      <symbol type='terminal'>-</symbol>
+    </symbols>
+    <rules>
+      <rule>
+        <left>
+          <symbol>A</symbol>
+        </left>
+        <right>
+          <symbol>f</symbol>
+          <symbol>(</symbol>
+          <symbol>+</symbol>
+          <symbol>B</symbol>
+		  <symbol>)</symbol>
+		  <symbol>(</symbol>
+		  <symbol>-</symbol>
+          <symbol>B</symbol>
+		  <symbol>)</symbol>
+		  <symbol>(</symbol>
+		  <symbol>B</symbol>
+		  <symbol>)</symbol>
+        </right>
+      </rule>
+	  <rule>
+        <left>
+          <symbol>B</symbol>
+        </left>
+        <right>
+		  <symbol>f</symbol>
+          <symbol>-</symbol>
+          <symbol>f</symbol>
+		  <symbol>+</symbol>
+		  <symbol>A</symbol>
+        </right>
+      </rule>
+    </rules>
+    <startsymbol>
+      <symbol>
+        A
+      </symbol>
+    </startsymbol>
+  </grammar>
+</lindenmayer>

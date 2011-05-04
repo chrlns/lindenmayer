@@ -1,0 +1,13 @@
+Source: lindenmayer
+Section: misc
+Priority: optional
+Maintainer: Christian Lins <cli@openoffice.org>
+Homepage: http://lindenmayer.berlios.de/
+Package: lindenmayer
+Version: 0.4.0alpha1
+Architecture: all
+Depends: sun-java6-jre | openjdk-6-jre-headless | openjdk-6-jre | java-virtual-machine,
+ java2-runtime, libjdom1-java
+Suggests: coredesigner
+Description: Lindenmayer
+ Lindenmayer is a program for visualization of L(indenmayer)-Systems as trees.
