@@ -1,8 +1,7 @@
 /*
  *  Lindenmayer
- *  Copyright (C) 2007-2009 Christian Lins <christian.lins@fh-osnabrueck.de>
- *  Copyright (C) 2007,2008 Kai Ritterbusch <kai.ritterbusch@osnanet.de>
- * 
+ *  see AUTHORS for a list of contributors.
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -16,7 +15,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package lindenmayer.grammar;
 
 /**
@@ -25,49 +23,26 @@ package lindenmayer.grammar;
  * @author Christian Lins
  * @author Kai Ritterbusch
  */
-public class Rule
-{
+public class Rule {
 
-  private Symbol    input;
-  private SymbolSet production;
-  private boolean   stackless;
-  
-  public Rule(boolean stackless, Symbol input, SymbolSet production)
-  {
-    this.input      = input;
-    this.production = production;
-    this.stackless  = stackless;
-  }
+	private Symbol input;
+	private SymbolSet production;
 
-  public Symbol getInput()
-  {
-    return input;
-  }
+	public Rule(Symbol input, SymbolSet production) {
+		this.input = input;
+		this.production = production;
+	}
 
-  public SymbolSet getProduction()
-  {
-    return production;
-  }
-  
-  /**
-   * If this method returns true the evaluation algorithm must simply replace
-   * the input by the production, without pushing/popping states from the
-   * evaluation stack.
-   */
-  public boolean isStackless()
-  {
-    return this.stackless;
-  }
-  
-  @Override
-  public String toString()
-  {
-    String arrow = "-->";
-    if(stackless)
-    {
-      arrow = "-->>";
-    }
-    return input.toString() + arrow + production.toString();
-  }
+	public Symbol getInput() {
+		return input;
+	}
 
+	public SymbolSet getProduction() {
+		return production;
+	}
+
+	@Override
+	public String toString() {
+		return input.toString() + " --> " + production.toString();
+	}
 }

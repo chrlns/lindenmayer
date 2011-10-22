@@ -1,6 +1,6 @@
 /*
  *  Lindenmayer
- *  Copyright (C) 2009 Christian Lins <cli@openoffice.org>
+ *  see AUTHORS for a list of contributors.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,7 +15,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package lindenmayer.gui;
 
 import javax.swing.JFileChooser;
@@ -24,7 +23,6 @@ import javax.swing.JFileChooser;
  *
  * @author Christian Lins
  */
-public class ExportFileChooser extends JFileChooser
-{
-
+@SuppressWarnings("serial")
+class ExportFileChooser extends JFileChooser {
 }

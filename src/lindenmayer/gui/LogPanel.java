@@ -1,7 +1,6 @@
 /*
  *  Lindenmayer
- *  Copyright (C) 2007,2008 Kai Ritterbusch <kai.ritterbusch@osnanet.de>
- *  Copyright (C) 2007-2009 Christian Lins <cli@openoffice.org>
+ *  see AUTHORS for a list of contributors.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,106 +15,92 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package lindenmayer.gui;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import javax.swing.DefaultListModel;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import lindenmayer.Status;
+import lindenmayer.StatusChangeListener;
+import lindenmayer.grammar.Node;
+import lindenmayer.grammar.Rule;
+import lindenmayer.i18n.Lang;
 
-public class LogPanel extends JPanel
-{  
-  private DefaultListModel listModel = new DefaultListModel();
-  private JList            recDepth  = new JList(listModel);    // List with recursion depth
-  private JTextArea        subs      = new JTextArea();         // Description of the substitutions 
-  
-  /**
-   *  The key is "Rekursion XX" for the XX recursion. The value is an ArrayList
-   *  of Strings representing the replacement rules.
-   */
-  private Map<String, Set<String>> logs = new HashMap<String, Set<String>>();
-  
-  public LogPanel()
-  {
-    setLayout(new GridLayout(0, 1));
-    
-    
-    JPanel recPanel   = new JPanel(new BorderLayout());
-    JPanel subPanel   = new JPanel(new BorderLayout());
-    
-    recPanel.add(new JLabel("Rekursionstiefe"), BorderLayout.NORTH);
-    recPanel.add(new JScrollPane(recDepth), BorderLayout.CENTER);
-    subPanel.add(new JLabel("Angew. Regeln"), BorderLayout.NORTH);
-    subPanel.add(new JScrollPane(subs), BorderLayout.CENTER);     
-    
-    recDepth.addListSelectionListener(new ListSelectionListener() 
-    {
-      public void valueChanged( ListSelectionEvent e ) 
-      {
-        if(recDepth.getSelectedValue() == null)
-          return;
-        
-        String        key = recDepth.getSelectedValue().toString();
-        StringBuilder tmp = new StringBuilder();
-        tmp.append("Ersetzungen in ");
-        tmp.append(key);
-        tmp.append("\n");
-        
-        Set<String> log = logs.get(key);
-        if(log == null)
-          tmp.append("Keine\n");
-        else
-        {
-          for(String s : log)
-          {
-            tmp.append(s);
-            tmp.append("\n");
-          }
-        }
-        
-        subs.setText(tmp.toString());
-      }
-    } );
-  
-    add(recPanel);
-    add(subPanel);
-  }
-  
-  public void addNewRecDepth(String recursion, String rule)
-  {
-    Set<String> log = logs.get(recursion);
-    if(log == null)
-    {
-      log = new HashSet<String>();
-      logs.put(recursion, log);
-      
-      listModel.addElement(recursion);
-    }
-    
-    // This method may be called multiple time, so we have to check
-    // for duplicates
-    if(!log.contains(rule))
-    {
-      log.add(rule);
-    }
-  }
-  
-  public void reset()
-  {
-    listModel.removeAllElements();
-    logs.clear();
-    subs.setText("");
-  }
-  
+@SuppressWarnings("serial")
+class LogPanel extends JPanel implements StatusChangeListener {
+
+	public static final String LINE = "---------------------------------------\n";
+	
+	private JTextArea log = new JTextArea(); // Description of the substitutions
+
+	public LogPanel() {
+		setLayout(new GridLayout(0, 1));
+
+		JPanel subPanel = new JPanel(new BorderLayout());
+		subPanel.add(new JLabel(Lang.get(30)), BorderLayout.NORTH);
+		subPanel.add(new JScrollPane(log), BorderLayout.CENTER);
+
+		add(subPanel);
+	}
+
+	private void reset() {
+		log.setText("");
+	}
+
+	public void statusChanged(Status status) {
+		try {
+			reset();
+
+			if(status.currentTree() != null) {
+				StringBuilder logBuf = new StringBuilder();
+				
+				// Walk trough the current tree and log its creation
+				List<Node> walkList = new ArrayList<Node>();
+				Node root = status.currentTree();
+				int rootDepth = root.getDepth();
+				walkList.add(root);
+				
+				while(!walkList.isEmpty()) {
+					Node node = walkList.remove(0);
+					for(Node child : node.getChildren()) {
+						walkList.add(child);
+					}
+
+					Rule rule = node.getRule();
+					int depth = node.getDepth();
+		
+					logBuf.append(Lang.get(46)); // "Recursion"
+					logBuf.append(' ');
+					logBuf.append(rootDepth - depth);
+					logBuf.append(": ");
+		
+					String str;
+					if(rule != null) {
+						str = Lang.get(40, node.getSymbol().getText(), rule.toString());
+					} else {
+						str = Lang.get(45, node.getSymbol().getText()); 
+					}
+					
+					logBuf.append(str);
+					logBuf.append('\n');
+				}
+
+				this.log.setText(logBuf.toString());
+			}
+		} catch(OutOfMemoryError err) {
+			System.gc();
+			reset();
+			System.err.println("OutOfMemoryError in LogPanel.statusChanged()");
+			this.log.setText(Lang.get(44));
+			MainFrame.getInstance().getToolbar().stopPlay();
+		}
+	}
+
+	public void statusReset(Status status) {
+	}
 }

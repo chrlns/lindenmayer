@@ -1,8 +1,7 @@
 /*
  *  Lindenmayer
- *  Copyright (C) 2007, 2008 Kai Ritterbusch <kai.ritterbusch@osnanet.de>
- *  Copyright (C) 2007, 2008 Christian Lins <christian.lins@web.de>
- * 
+ *  see AUTHORS for a list of contributors.
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -16,34 +15,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-package lindenmayer.grammar;
+package lindenmayer.gui;
 
 /**
- * An alphabet consists of a set of symbols. This class is not more than
- * a wrapper around the SymbolSet class, but hopefully here are more 
- * useful methods in future.
+ *
  * @author Christian Lins
- * @author Kai Ritterbusch
  */
-public class Alphabet
-{
+interface RuleDialogCallback {
 
-   private SymbolSet tokens;
-  
-   public Alphabet(SymbolSet tokens)
-   {
-     this.tokens = tokens; 
-   }
-   
-   public SymbolSet getSymbols()
-   {
-      return this.tokens;
-   }
-   
-   public void addSymbol(Symbol sym)
-   {
-     tokens.add(sym);
-   }
-   
+	void dialogOk(EditRuleDialog dlg);
 }

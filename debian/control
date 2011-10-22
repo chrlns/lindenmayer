@@ -1,13 +1,17 @@
-Source: lindenmayer
-Section: misc
+Source: lindenmayer 
+Section: science
 Priority: optional
-Maintainer: Christian Lins <cli@openoffice.org>
-Homepage: http://lindenmayer.berlios.de/
+Maintainer: Christian Lins <christian@lins.me>
+Homepage: http://bitbucket.org/cli/lindenmayer
+Standards-Version: 3.9.2
+Build-Depends: debhelper (>= 7.0.50~), openjdk-6-jdk, ant, ant-optional, 
+ libjdom1-java, docbook-xsl, docbook-xml, xsltproc
+
 Package: lindenmayer
-Version: 0.4.0alpha1
 Architecture: all
-Depends: sun-java6-jre | openjdk-6-jre-headless | openjdk-6-jre | java-virtual-machine,
- java2-runtime, libjdom1-java
-Suggests: coredesigner
-Description: Lindenmayer
- Lindenmayer is a program for visualization of L(indenmayer)-Systems as trees.
+Depends: ${misc:Depends}, openjdk-6-jre | java2-runtime, libjdom1-java
+Description: L-Systems grammar viewer and editor
+ A program for visualization of L(indenmayer)-Systems as trees.
+ Lindenmayer reads formal grammars from XML files and render 
+ them as plant-looking images. Additionally, the program incorporates
+ basic editing functions for this grammars.

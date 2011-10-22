@@ -1,7 +1,6 @@
 /*
  *  Lindenmayer
- *  Copyright 2007, 2008 Kai Ritterbusch <kai.ritterbusch@osnanet.de>
- *  Copyright 2007, 2008 Christian Lins <christian.lins@web.de>
+ *  see AUTHORS for a list of contributors.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,37 +15,37 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package lindenmayer.gui;
 
 import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
+import lindenmayer.i18n.Lang;
 
 /**
  * Filechooser that let the users select XML files.
- * @author Christian Lins (christian.lins@web.de)
- * @author Kai Ritterbusch (kai.ritterbusch@osnanet.de)
+ * @author Christian Lins
+ * @author Kai Ritterbusch
  */
-public class XMLFileChooser extends JFileChooser
-{
-  public XMLFileChooser()
-  {
-    super(new File("."));
-    
-    addChoosableFileFilter(new FileFilter() 
-    {
-      public boolean accept(File f) 
-      {
-        if (f.isDirectory()) 
-          return true;
-        return f.getName().toLowerCase().endsWith(".xml");
-      }
-      public String getDescription () 
-      { 
-        return "XML-Grammatik-Dateien"; 
-      }  
-    });
-  }
+@SuppressWarnings("serial")
+class XMLFileChooser extends JFileChooser {
+
+	public XMLFileChooser() {
+		super(new File("."));
+
+		addChoosableFileFilter(new FileFilter() {
+
+			public boolean accept(File f) {
+				if (f.isDirectory()) {
+					return true;
+				}
+				return f.getName().toLowerCase().endsWith(".xml");
+			}
+
+			public String getDescription() {
+				return Lang.get(18); // "XML grammar files"
+			}
+		});
+	}
 }

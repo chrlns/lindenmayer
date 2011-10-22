@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" [
+
+<!--
+
+Process this file with an XSLT processor: `xsltproc \
+-''-nonet /usr/share/sgml/docbook/stylesheet/xsl/nwalsh/\
+manpages/docbook.xsl manpage.dbk'.  A manual page
+<package>.<section> will be generated.  You may view the
+manual page with: nroff -man <package>.<section> | less'.  A
+typical entry in a Makefile or Makefile.am is:
+
+DB2MAN=/usr/share/sgml/docbook/stylesheet/xsl/nwalsh/\
+manpages/docbook.xsl
+XP=xsltproc -''-nonet
+
+manpage.1: manpage.dbk
+        $(XP) $(DB2MAN) $<
+    
+The xsltproc binary is found in the xsltproc package.  The
+XSL files are in docbook-xsl.  Please remember that if you
+create the nroff version in one of the debian/rules file
+targets (such as build), you will need to include xsltproc
+and docbook-xsl in your Build-Depends control field.
+
+-->
+
+  <!-- Fill in your name for FIRSTNAME and SURNAME. -->
+  <!ENTITY dhfirstname "<firstname>Christian</firstname>">
+  <!ENTITY dhsurname   "<surname>Lins</surname>">
+  <!-- Please adjust the date whenever revising the manpage. -->
+  <!ENTITY dhdate      "<date>Oct 22, 2011</date>">
+  <!-- SECTION should be 1-8, maybe w/ subsection other parameters are
+       allowed: see man(7), man(1). -->
+  <!ENTITY dhsection   "<manvolnum>1</manvolnum>">
+  <!ENTITY dhemail     "<email>christian@lins.me</email>">
+  <!ENTITY dhusername  "Christian Lins">
+  <!ENTITY dhucpackage "<refentrytitle>lindenmayer</refentrytitle>">
+  <!ENTITY dhpackage   "lindenmayer">
+
+  <!ENTITY debian      "<productname>Debian</productname>">
+  <!ENTITY gnu         "<acronym>GNU</acronym>">
+  <!ENTITY gpl         "&gnu; <acronym>GPL</acronym>">
+]>
+
+<refentry>
+  <refentryinfo>
+    <address>
+      &dhemail;
+    </address>
+    <author>
+      &dhfirstname;
+      &dhsurname;
+    </author>
+    <copyright>
+      <year>2011</year>
+      <holder>&dhusername;</holder>
+    </copyright>
+    &dhdate;
+  </refentryinfo>
+  <refmeta>
+    &dhucpackage;
+    &dhsection;
+    <refmiscinfo class="source">lindenmayer</refmiscinfo>
+    <refmiscinfo class="manual"></refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>&dhpackage;</refname>
+
+    <refpurpose>L-system grammar viewer and editor</refpurpose>
+  </refnamediv>
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>&dhpackage;</command>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+  <refsect1>
+    <title>DESCRIPTION</title>
+
+    <para>This manual page documents briefly the
+      <command>&dhpackage;</command> command.</para>
+
+    <para>Lindenmayer is a small graphical Java application that allows
+     one to edit and view context free L-systems grammars
+     that produce plant-looking turtle graphics.
+    </para>
+
+    <para>
+     The grammar used in Lindenmayer contains of
+       <itemizedlist>
+         <listitem><para>Replacement rules</para></listitem>
+         <listitem><para>Variable symbols, represented by capital characters A..Z</para></listitem>
+         <listitem><para>Constant symbols, represented by lower character a..z</para></listitem>
+         <listitem><para>Action symbols, '+', '-', '(' and ')'</para></listitem>
+       </itemizedlist>
+    </para>
+
+    <para>
+      Replacement rules have the form
+      <literallayout> 
+      <![CDATA[
+        <VARIABLE> --> [<VARIABLE> | <CONSTANT> | <ACTION>]*
+      ]]>
+      </literallayout>
+      which means that the left side of a rule is always a variable symbol and the right side
+      can be one or more other allowed symbols.
+      Example:
+      <literallayout>
+      <![CDATA[
+        A --> f+B
+      ]]>
+      </literallayout>
+      Meaning: the input symbol 'A' is replaced by the set 'f' '+' 'B'. The 'B' may be then
+      later replaced using another rule.
+    </para>
+
+    <para>
+     Using the rules and the symbols Lindenmayer builds a syntax tree (AST) down to a
+     given recursion level (yes, rules can (and in most cases should) be recursive).
+     The syntax tree contains only constants (and action symbols), except for its leaves
+     that may contain unreplaced variables.
+    </para>
+
+    <para>
+     The created syntax tree is then painted as follows:
+     beginning with the root of the tree the painting starts at the bottom center
+     "pointing to the sky". Then the root's children are painted and so on.
+    </para> 
+
+    <para>
+      There are two constants that have a special meaning: 'f' and 'g'. The first
+      moves the pointer while drawing a line, the second moves the pointer without drawing a line.
+    </para>
+
+    <para>
+     The position of the pointer is stored together with its direction in a data structure called the 'turtle'
+     for historical reasons. To rotate the angle of the pointer the symbols '+' and '-' are used.
+     If the painting loop gets a '(' a copy of the current 'turtle' is pushed onto a stack and if it gets 
+     a ')' the 'turtle' on the stack is popped back to replace the current one.
+    </para>
+
+    <para>
+     Example: to draw a very small tree that looks like a 'Y' (a trunk with two branches heading to the left and right)
+     use two rules:
+     <literallayout>
+     <![CDATA[
+       A --> f(-B)(+B)
+       B --> f
+     ]]>
+     </literallayout>
+     with A as start symbol.
+    </para>
+
+  </refsect1>
+  <refsect1>
+    <title>OPTIONS</title>
+
+    <para>A summary of command line options is included below.</para>
+
+    <variablelist>
+      <varlistentry>
+        <term>
+          <option>-version</option>
+        </term>
+        <listitem>
+          <para>Show version of program.</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect1>
+
+  <refsect1>
+    <title>SEE ALSO</title>
+
+    <para>java (1),</para>
+
+  </refsect1>
+
+</refentry>
+

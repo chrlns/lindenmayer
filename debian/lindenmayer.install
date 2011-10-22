@@ -1,0 +1,4 @@
+debian/lindenmayer.desktop	/usr/share/applications/
+debian/lindenmayer*.xpm		/usr/share/pixmaps/
+build/lindenmayer*.jar		/usr/share/java/
+lindenmayer			/usr/bin/

@@ -1,7 +1,6 @@
 /*
  *  Lindenmayer
- *  Copyright (C) 2007-2009 Christian Lins <cli@openoffice.org>
- *  Copyright (C) 2007,2008 Kai Ritterbusch <kai.ritterbusch@osnanet.de>
+ *  see AUTHORS for a list of contributors.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,7 +15,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package lindenmayer.io;
 
 import java.awt.Image;
@@ -34,81 +32,76 @@ import javax.swing.ImageIcon;
  * Provides useful static methods for handling resources.
  * @author Christian Lins
  */
-public class Resource
-{
+public class Resource {
 
-  /**
-   * Loads an image from a local resource.
-   * @param name
-   */
-  public static ImageIcon getImage(String name)
-  {
-    URL url = getAsURL(name);
-    
-    if(url == null)
-    {
-      Image img = Toolkit.getDefaultToolkit().createImage(name);
-      return new ImageIcon(img);
-    }
-    
-    return new ImageIcon(url);
-  }
-  
-  /**
-   * Loads a resource and returns an URL on it.
-   */
-  public static URL getAsURL(String name)
-  {
-    return Resource.class.getClassLoader().getResource(name);
-  }
-  
-  /**
-   * Loads a resource and returns an InputStream on it.
-   */
-  public static InputStream getAsStream(String name)
-  {
-    try
-    {
-      URL url = getAsURL(name);
-      return url.openStream();
-    }
-    catch(IOException e)
-    {
-      e.printStackTrace();
-      return null;
-    }
-  }
+	/**
+	 * Loads an image from a local resource.
+	 * @param name
+	 */
+	public static ImageIcon getImage(String name) {
+		URL url = getAsURL(name);
 
-  /**
-   * Reads a text file into a complete String.
-   */
-  public static String getAsString(String name, boolean withNewline)
-  {
-    try
-    {
-      BufferedReader in  = new BufferedReader(
-          new InputStreamReader(getAsStream(name), Charset.forName("UTF-8")));
-      StringBuffer   buf = new StringBuffer();
+		if (url == null) {
+			Image img = Toolkit.getDefaultToolkit().createImage(name);
+			return new ImageIcon(img);
+		}
 
-      String line = in.readLine();
-      while(line != null)
-      {
-        buf.append(line);
-        if(withNewline)
-        {
-          buf.append('\n');
-        }
+		return new ImageIcon(url);
+	}
 
-        line = in.readLine();
-      }
+	/**
+	 * Loads a resource and returns an URL on it.
+	 */
+	public static URL getAsURL(String name) {
+		return Resource.class.getClassLoader().getResource(name);
+	}
 
-      return buf.toString();
-    }
-    catch(Exception ex)
-    {
-      ex.printStackTrace();
-      return null;
-    }
-  }
+	/**
+	 * Loads a resource and returns an InputStream on it.
+	 */
+	public static InputStream getAsStream(String name) {
+		try {
+			URL url = getAsURL(name);
+			return url.openStream();
+		} catch (IOException ex) {
+			ex.printStackTrace(System.err);
+			return null;
+		}
+	}
 
+	/**
+	 * Reads a text file into a complete String.
+	 */
+	public static String getAsString(String name, boolean withNewline) {
+		BufferedReader in = null;
+		try {
+			InputStreamReader insr =
+				new InputStreamReader(getAsStream(name), Charset.forName("UTF-8"));
+			in = new BufferedReader(insr);
+			StringBuilder buf = new StringBuilder();
+
+			String line = in.readLine();
+			while (line != null) {
+				buf.append(line);
+				if (withNewline) {
+					buf.append('\n');
+				}
+
+				line = in.readLine();
+			}
+
+			return buf.toString();
+		} catch (Exception ex) {
+			ex.printStackTrace(System.err);
+			return null;
+		} finally {
+			if(in != null) {
+				try {
+					in.close();
+				} catch(IOException ex) {
+					System.err.println("Error closing stream: " + ex.getLocalizedMessage());
+				}
+			}
+		}
+	}
 }

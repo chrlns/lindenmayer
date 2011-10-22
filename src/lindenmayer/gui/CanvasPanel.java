@@ -1,8 +1,7 @@
 /*
  *  Lindenmayer
- *  Copyright 2007, 2008 Kai Ritterbusch <kai.ritterbusch@osnanet.de>
- *  Copyright 2007, 2008 Christian Lins <christian.lins@web.de>
- * 
+ *  see AUTHORS for a list of contributors.
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -16,81 +15,59 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package lindenmayer.gui;
 
 import java.awt.BorderLayout;
-
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-import lindenmayer.grammar.DefaultNode;
-import lindenmayer.grammar.Node;
-import lindenmayer.grammar.Plant;
-import lindenmayer.grammar.SymbolSet;
+import lindenmayer.Status;
+import lindenmayer.StatusChangeListener;
 import lindenmayer.grammar.TreePlant;
 
 /**
  * The CanvasPanel is on the left side of the MainFrame and contains
  * the Plant that is painted.
- * @author Christian Lins (christian.lins@web.de)
- * @author Kai Ritterbusch (kai.ritterbusch@osnanet.de)
+ * @author Christian Lins
+ * @author Kai Ritterbusch
  */
-public class CanvasPanel extends JPanel
-{
-  private JScrollPane      scrollPane = null;
-  private Plant            plant;
-  
-  public CanvasPanel()
-  {
-    setLayout(new BorderLayout());
-  }
+@SuppressWarnings("serial")
+class CanvasPanel extends JPanel implements StatusChangeListener {
 
-  /**
-   * Creates a new Plant.
-   */
-  public void createPlant()
-  {
-    try
-    {
-      System.out.println("startsymbol: "+MainFrame.getInstance().getGrammar().getStartSymbol().toString().trim());
-      plant = new Plant(new SymbolSet(MainFrame.getInstance().getGrammar().getStartSymbol().toString().trim()));
-      Node treeRoot = DefaultNode.createParseTree(MainFrame.getInstance().getGrammar(), 5);
-      
-      if(scrollPane != null)
-        remove(scrollPane);
-      
-      scrollPane = new JScrollPane(new TreePlant(treeRoot));
-      add(scrollPane, BorderLayout.CENTER);
-      MainFrame.getInstance().getSplitPane().setDividerLocation(
-          MainFrame.getInstance().getSplitPane().getDividerLocation());
-     
-      // TODO: nur ein workaround
-      scrollPane.getHorizontalScrollBar().setValue(getWidth()/2);
-      scrollPane.getVerticalScrollBar().setValue(plant.getHeight());
-      
-    }
-    catch(NullPointerException ex)
-    {
-      ex.printStackTrace();
-      String[] msg = {"Keine Grammatik geladen!"};
-      JOptionPane.showMessageDialog(MainFrame.getInstance(), msg);
-    }
-  }
-  
-  public Plant getPlant()
-  {
-    return this.plant;
-  }
+	private JScrollPane scrollPane = null;
 
-  public JScrollPane getScrollPane()
-  {
-    return scrollPane;
-  }
+	public CanvasPanel() {
+		setLayout(new BorderLayout());
+	}
 
-  public void setScrollPane(JScrollPane scrollPane)
-  {
-    this.scrollPane = scrollPane;
-  }
+	private void setTreePlant(TreePlant plant) {
+		if (scrollPane != null) {
+			remove(scrollPane);
+		}
+
+		scrollPane = new JScrollPane(plant);
+		add(scrollPane, BorderLayout.CENTER);
+
+		// TODO: only a workaround
+		scrollPane.getHorizontalScrollBar().setValue(getWidth() / 2);
+		//scrollPane.getVerticalScrollBar().setValue(plant.getHeight());
+		validate();
+	}
+
+	public JScrollPane getScrollPane() {
+		return scrollPane;
+	}
+
+	public void setScrollPane(JScrollPane scrollPane) {
+		this.scrollPane = scrollPane;
+	}
+
+	public void statusChanged(Status status) {
+		// Redraw with top of the tree stack
+		setTreePlant(new TreePlant(status.currentTree()));
+	}
+
+	public void statusReset(Status status) {
+		// Redraw with top of the tree stack
+		setTreePlant(new TreePlant(status.currentTree()));
+	}
 }

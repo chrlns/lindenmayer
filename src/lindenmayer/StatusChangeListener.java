@@ -1,8 +1,7 @@
 /*
  *  Lindenmayer
- *  Copyright (C) 2007-2009 Christian Lins <christian.lins@fh-osnabrueck.de>
- *  Copyright (C) 2007,2008 Kai Ritterbusch <kai.ritterbusch@osnanet.de>
- * 
+ *  see AUTHORS for a list of contributors.
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -16,27 +15,17 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-package lindenmayer.grammar;
-
-import java.util.ArrayList;
-import java.util.List;
+package lindenmayer;
 
 /**
- *
+ * Classes that want to be notified on changes in the program's status
+ * (including the Grammar), must implement this interface and register itself
+ * at the current status.
  * @author Christian Lins
  */
-class StackPopNode implements Node
-{
+public interface StatusChangeListener {
 
-  public List<Node> getChildren()
-  {
-    return new ArrayList<Node>();
-  }
+	void statusChanged(Status status);
 
-  public Symbol getSymbol()
-  {
-    return new Symbol(")");
-  }
-
+	void statusReset(Status status);
 }

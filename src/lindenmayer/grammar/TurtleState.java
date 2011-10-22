@@ -1,8 +1,7 @@
 /*
  *  Lindenmayer
- *  Copyright (C) 2007-2009 Christian Lins <cli@openoffice.org>
- *  Copyright (C) 2007,2008 Kai Ritterbusch <kai.ritterbusch@osnanet.de>
- * 
+ *  see AUTHORS for a list of contributors.
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -16,7 +15,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package lindenmayer.grammar;
 
 import java.awt.Color;
@@ -27,128 +25,112 @@ import java.awt.Color;
  * @author Christian Lins
  * @author Kai Ritterbusch
  */
-public class TurtleState implements Cloneable
-{
+public class TurtleState implements Cloneable {
 
-  public static final float DEFAULT_LINE_LENGTH   = 55;
-  public static final float DEFAULT_SCALE_FACTOR  = 0.90f;
-  public static final float DEFAULT_STROKE_WIDTH  = 6;
+	public static final float DEFAULT_LINE_LENGTH = 55;
+	public static final float DEFAULT_SCALE_FACTOR = 0.90f;
+	public static final float DEFAULT_STROKE_WIDTH = 6;
+	private Color color = Color.BLACK;
+	private float x = 0;
+	private float y = 0;
+	private float angle = 0;
+	private float lineLength = DEFAULT_LINE_LENGTH;
+	private float strokeWidth = DEFAULT_STROKE_WIDTH;
 
-  private Color color       = Color.BLACK;
-  private float x           = 0;
-  private float y           = 0;
-  private float angle       = 0;
-  private float lineLength  = DEFAULT_LINE_LENGTH;
-  private float strokeWidth = DEFAULT_STROKE_WIDTH;
-  
-  public TurtleState()
-  {
-  }
-  
-  public TurtleState(float x, float y, float angle, Color color,
-          float lineLength, float strokeWidth)
-  {
-    this.x           = x;
-    this.y           = y;
-    this.angle       = angle;
-    this.color       = color;
-    this.lineLength  = lineLength;
-    this.strokeWidth = strokeWidth;
-  }
-  
-  @Override
-  public TurtleState clone()
-  {
-    return new TurtleState(x, y, angle, new Color(getColor().getRGB()),
-            lineLength, strokeWidth);
-  }
+	public TurtleState() {
+	}
 
-  public TurtleState scaleDown()
-  {
-    // Reduce stroke width and line length
-    this.lineLength  *= DEFAULT_SCALE_FACTOR;
-    this.strokeWidth *= DEFAULT_SCALE_FACTOR;
+	public TurtleState(float x, float y, float angle, Color color,
+			float lineLength, float strokeWidth) {
+		this.x = x;
+		this.y = y;
+		this.angle = angle;
+		this.color = color;
+		this.lineLength = lineLength;
+		this.strokeWidth = strokeWidth;
+	}
 
-    // Lighten the color
-    this.color = color.brighter();
-    return this;
-  }
+	@Override
+	public Object clone() {
+		try {
+			TurtleState newTurtle = (TurtleState)super.clone();
+			return newTurtle;
+		} catch(CloneNotSupportedException ex) {
+			throw new InternalError();
+		}
+	}
 
-  public float getAngle()
-  {
-    return angle;
-  }
+	public TurtleState scaleDown() {
+		// Reduce stroke width and line length
+		this.lineLength *= DEFAULT_SCALE_FACTOR;
+		this.strokeWidth *= DEFAULT_SCALE_FACTOR;
 
-  public void setAngle(float angle)
-  {
-    this.angle = angle;
-  }
+		// Lighten the color
+		this.color = color.brighter();
+		return this;
+	}
 
-  public float getX()
-  {
-    return x;
-  }
+	public float getAngle() {
+		return angle;
+	}
 
-  public void setX(float x)
-  {
-    this.x = x;
-  }
+	public void setAngle(float angle) {
+		this.angle = angle;
+	}
 
-  public float getY()
-  {
-    return y;
-  }
+	public float getX() {
+		return x;
+	}
 
-  public void setY(float y)
-  {
-    this.y = y;
-  }
-  
-  public void rotateAngle(float angle)
-  {
-    this.angle += angle;
-  }
+	public void setX(float x) {
+		this.x = x;
+	}
 
-  public Color getColor()
-  {
-    return color;
-  }
+	public float getY() {
+		return y;
+	}
 
-  public void setColor(Color color)
-  {
-    this.color = color;
-  }
+	public void setY(float y) {
+		this.y = y;
+	}
 
-  /**
-   * @return the lineLength
-   */
-  public float getLineLength()
-  {
-    return lineLength;
-  }
+	public void rotateAngle(float angle) {
+		this.angle += angle;
+	}
 
-  /**
-   * @param lineLength the lineLength to set
-   */
-  public void setLineLength(float lineLength)
-  {
-    this.lineLength = lineLength;
-  }
+	public Color getColor() {
+		return color;
+	}
 
-  /**
-   * @return the strokWidth
-   */
-  public float getStrokeWidth()
-  {
-    return strokeWidth;
-  }
+	public void setColor(Color color) {
+		this.color = color;
+	}
 
-  /**
-   * @param strokWidth the strokWidth to set
-   */
-  public void setStrokeWidth(float strokeWidth)
-  {
-    this.strokeWidth = strokeWidth;
-  }
+	/**
+	 * @return the lineLength
+	 */
+	public float getLineLength() {
+		return lineLength;
+	}
 
+	/**
+	 * @param lineLength the lineLength to set
+	 */
+	public void setLineLength(float lineLength) {
+		this.lineLength = lineLength;
+	}
+
+	/**
+	 * @return the strokWidth
+	 */
+	public float getStrokeWidth() {
+		return strokeWidth;
+	}
+
+	/**
+	 * @param strokWidth the strokWidth to set
+	 */
+	public void setStrokeWidth(float strokeWidth) {
+		this.strokeWidth = strokeWidth;
+	}
 }

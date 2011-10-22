@@ -1,8 +1,7 @@
 /*
  *  Lindenmayer
- *  Copyright (C) 2007-2009 Christian Lins <christian.lins@web.de>
- *  Copyright (C) 2007,2008 Kai Ritterbusch <kai.ritterbusch@osnanet.de>
- * 
+ *  see AUTHORS for a list of contributors.
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -16,7 +15,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package lindenmayer.gui;
 
 import javax.swing.JDialog;
@@ -26,16 +24,14 @@ import lindenmayer.i18n.Lang;
  * Frame holding a ConfigPanel.
  * @author Christian Lins
  */
-class ConfigDialog extends JDialog
-{
+@SuppressWarnings("serial")
+class ConfigDialog extends JDialog {
 
-  public ConfigDialog()
-  {
-    setContentPane(new ConfigPanel(this));
-    pack();
-    Utils.centerOnScreen(this);
-    setModal(true);
-    setTitle(Lang.get("4")); // Settings
-  }
-
+	public ConfigDialog() {
+		setContentPane(new ConfigPanel(this));
+		pack();
+		Utils.centerOnScreen(this);
+		setModal(true);
+		setTitle(Lang.get(4)); // Settings
+	}
 }

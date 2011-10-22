@@ -1,6 +1,6 @@
 /*
  *  Lindenmayer
- *  Copyright (c) 2007-2009 Christian Lins <cli@openoffice.org>
+ *  see AUTHORS for a list of contributors.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,30 +15,40 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package lindenmayer.gui;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Toolkit;
+import javax.swing.JFrame;
 
 /**
  * GUI utilities.
  * @author Christian Lins
  */
-public class Utils 
-{
+class Utils {
 
-  public static void centerOnScreen(Component comp)
-  {
-    // Size of screen
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	static int[] getCenteredLocation(Component comp) {
+		// Size of screen
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-    // Calculate frame position
-    int top = (screenSize.height - comp.getHeight()) / 2;
-    int left = (screenSize.width - comp.getWidth()) / 2;
+		// Calculate frame position
+		int top = (screenSize.height - comp.getHeight()) / 2;
+		int left = (screenSize.width - comp.getWidth()) / 2;
 
-    comp.setLocation(left, top); 
-  }
+		return new int[]{left, top};
+	}
 
+	public static void centerOnFrame(JFrame frame, Component comp) {
+		Point p = frame.getLocation();
+		int left = p.x + (frame.getWidth() - comp.getWidth()) / 2;
+		int top = p.y + (frame.getHeight() - comp.getHeight()) / 2;
+		comp.setLocation(left, top);
+	}
+
+	public static void centerOnScreen(Component comp) {
+		int[] pos = getCenteredLocation(comp);
+		comp.setLocation(pos[0], pos[1]);
+	}
 }

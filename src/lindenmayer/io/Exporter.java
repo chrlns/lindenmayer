@@ -1,6 +1,6 @@
 /*
  *  Lindenmayer
- *  Copyright (C) 2009 Christian Lins <cli@openoffice.org>
+ *  see AUTHORS for a list of contributors.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,37 +15,34 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package lindenmayer.io;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import lindenmayer.grammar.Plant;
+import lindenmayer.grammar.TreePlant;
 
 /**
  * An interface for all Plant exporters.
  * @author Christian Lins
  */
-public interface Exporter 
-{
+public interface Exporter {
 
-  /**
-   * Exports the plant to the output stream. Implmenting classes may throw
-   * an IOException.
-   * @param plant
-   * @param out
-   */
-  void export(Plant plant, OutputStream out) throws IOException;
-  
-  /**
-   * @return A short description of the output file format.
-   */
-  String getDescription();
-  
-  /**
-   * If this exporter is able to export to a file this method returns the
-   * file extension, e.g. ".bmp"
-   */
-  String getFileExtension();
+	/**
+	 * Exports the plant to the output stream. Implmenting classes may throw
+	 * an IOException.
+	 * @param plant
+	 * @param out
+	 */
+	void export(TreePlant plant, OutputStream out) throws IOException;
 
+	/**
+	 * @return A short description of the output file format.
+	 */
+	String getDescription();
+
+	/**
+	 * If this exporter is able to export to a file this method returns the
+	 * file extension, e.g. ".bmp"
+	 */
+	String getFileExtension();
 }

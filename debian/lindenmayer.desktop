@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Lindenmayer
+Comment=L-Systems viewer and editor
+Exec=/usr/bin/lindenmayer
+Icon=/usr/share/pixmaps/lindenmayer32.xpm
+Terminal=false
+Type=Application
+Categories=Education;Science;
+StartupNotify=false

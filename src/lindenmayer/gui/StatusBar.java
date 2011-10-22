@@ -1,7 +1,6 @@
 /*
  *  Lindenmayer
- *  Copyright 2007, 2008 Kai Ritterbusch <kai.ritterbusch@osnanet.de>
- *  Copyright 2007, 2008 Christian Lins <christian.lins@web.de>
+ *  see AUTHORS for a list of contributors.
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,37 +15,34 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package lindenmayer.gui;
 
 import java.awt.Dimension;
-
 import javax.swing.JLabel;
+import lindenmayer.i18n.Lang;
 
 /**
  * The StatusBar shows information at the bottom of the MainFrame.
- * @author Christian Lins (christian.lins@web.de)
- * @author Kai Ritterbusch (kai.ritterbusch@osnanet.de)
+ * @author Christian Lins
+ * @author Kai Ritterbusch
  */
-public class StatusBar extends JLabel
-{
-  /** Default constructor */
-  public StatusBar()
-  {
-    super.setPreferredSize(new Dimension(100,16));
-    setMessage("Bereit");
-  }
-  
-  /** Constructor */
-  public StatusBar(String str)
-  {
-    this();
-    setMessage(str);
-  }
-    
-  /** Sets text content */
-  public void setMessage(String message)
-  {
-    setText("  " + message);
-  }
+@SuppressWarnings("serial")
+class StatusBar extends JLabel {
+
+	/** Default constructor */
+	public StatusBar() {
+		super.setPreferredSize(new Dimension(100, 16));
+		setMessage(Lang.get(15)); // "Ready"
+	}
+
+	/** Constructor */
+	public StatusBar(String str) {
+		this();
+		setMessage(str);
+	}
+
+	/** Sets text content */
+	public void setMessage(String message) {
+		setText("  " + message);
+	}
 }

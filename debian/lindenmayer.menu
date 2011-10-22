@@ -1,0 +1,8 @@
+?package(lindenmayer):\
+	needs="X11"\
+	section="Applications/Science/Mathematics"\
+	title="Lindenmayer"\
+	command="/usr/bin/lindenmayer"\
+	icon="/usr/share/pixmaps/lindenmayer32.xpm"\
+	icon32x32="/usr/share/pixmaps/lindenmayer32.xpm"\
+	icon16x16="/usr/share/pixmaps/lindenmayer16.xpm"

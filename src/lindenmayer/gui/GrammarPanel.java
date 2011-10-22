@@ -1,8 +1,7 @@
 /*
  *  Lindenmayer
- *  Copyright 2007, 2008 Kai Ritterbusch <kai.ritterbusch@osnanet.de>
- *  Copyright 2007, 2008 Christian Lins <christian.lins@web.de>
- * 
+ *  see AUTHORS for a list of contributors.
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -16,165 +15,253 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package lindenmayer.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.DefaultListModel;
-import javax.swing.JLabel;
-import javax.swing.JList;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-
-import lindenmayer.grammar.Grammar;
+import lindenmayer.Lindenmayer;
+import lindenmayer.Status;
+import lindenmayer.StatusChangeListener;
 import lindenmayer.grammar.Rule;
 import lindenmayer.grammar.Symbol;
+import lindenmayer.grammar.SymbolSet;
+import lindenmayer.i18n.Lang;
 
 /**
- * This Panel allows editing of the loaded Grammar.
- * @author Christian Lins (christian.lins@web.de)
- * @author Kai Ritterbusch (kai.ritterbusch@osnanet.de)
+ * Panel that allows the user to create or edit grammar (elements).
+ * @author Christian Lins
  */
-public class GrammarPanel extends JPanel
-{
-  private MainFrame parent;
+@SuppressWarnings("serial")
+class GrammarPanel extends JPanel implements StatusChangeListener {
 
-  private JTextArea txtRules = new JTextArea();
-  private JTextArea txtInput = new JTextArea();
-  
-  private DefaultListModel listModelGrammar = new DefaultListModel();
-  private JList listGrammar;
-  private DefaultListModel listModelRules = new DefaultListModel();
-  private JList listRules;
-  
-  public GrammarPanel(MainFrame prt)
-  {    
-    this.parent = prt;
-    
-    txtInput.addKeyListener(new KeyAdapter()
-    {
-      public void keyReleased( KeyEvent e ) 
-      {
-        parent.getGrammar().setStartSymbol(txtInput.getText().trim());
-        System.out.println("neues Startsymbol: " + parent.getGrammar().getStartSymbol().toString());
-      } 
-    });
-    
-    StringBuilder str = new StringBuilder();
-    
-    Grammar g = MainFrame.getInstance().getGrammar();
-    if(g != null)
-    {
-      if(g.getStartSymbol() != null)
-        txtInput.setText(g.getStartSymbol().toString().trim());
-      
-      if(g.getAlphabet() != null)
-      {
-        for(Symbol tok : g.getAlphabet().getSymbols())
-        {
-          str.append(tok.toString()+"\n");
-          listModelGrammar.addElement(tok);
-        }
-      }
-      
-      str = new StringBuilder();
-      if(g.getRules() != null)
-      {
-        for(Rule rule : g.getRules())
-        {
-          str.append(rule.toString()+"\n");
-          listModelRules.addElement(rule);
-        }
-      }
+    private javax.swing.JButton btnAddRule;
+    private javax.swing.JButton btnDeleteRule;
+    private javax.swing.JButton btnEditRule;
+    private javax.swing.JComboBox cmbStartSymbol;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblAlphabet;
+    private javax.swing.JLabel lblRules;
+    private javax.swing.JLabel lblStartSymbol;
+    private javax.swing.JList listRules;
+    private javax.swing.JTextField txtAlphabet;
+	private int lastCaretPosition = 0;
+
+    /** Creates new form GrammarPanel */
+    public GrammarPanel() {
+        initComponents();
+
+		this.lblStartSymbol.setText(Lang.get(26));
+		this.lblAlphabet.setText(Lang.get(27));
+		this.lblRules.setText(Lang.get(28));
+		this.btnAddRule.setText(Lang.get(34));
+		this.btnEditRule.setText(Lang.get(35));
+		this.btnDeleteRule.setText(Lang.get(36));
     }
-    
-    listGrammar = new JList(listModelGrammar);
-    listGrammar.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-    listGrammar.setLayoutOrientation(JList.VERTICAL);
-    listGrammar.setVisibleRowCount(2);
-    JScrollPane listScroller = new JScrollPane(listGrammar);
-    listScroller.setPreferredSize(new Dimension(250, 100));
-    //txtGrammar.setText(str.toString());
-    //  Mouseklicks abfangen
-    listGrammar.addMouseListener(new MouseAdapter()
-    {
-      public void mouseClicked(MouseEvent e)
-      {
-        if(e.getButton() == MouseEvent.BUTTON3)
-        { 
-          listGrammar.setSelectedIndex(listGrammar.locationToIndex(e.getPoint()));
-          new ContextMenu(listGrammar, ContextMenu.Caller.TYPE_ALPHABET).show(listGrammar, e.getX(), e.getY());
-        }
-      }
-    });
-    
-    listRules = new JList(listModelRules);
-    listRules.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-    listRules.setLayoutOrientation(JList.VERTICAL);
-    listRules.setVisibleRowCount(2);
-    
-    //  Mouseklicks abfangen
-    listRules.addMouseListener(new MouseAdapter()
-    {
-      public void mouseClicked(MouseEvent e)
-      {        
-        if(SwingUtilities.isRightMouseButton(e))
-        {           
-          listRules.setSelectedIndex(listRules.locationToIndex(e.getPoint()));
-          new ContextMenu(listRules, ContextMenu.Caller.TYPE_RULE).show(listRules, e.getX(), e.getY());
-        }
-      }
-    });
-    JScrollPane listScrollerRules = new JScrollPane(listRules);
-    listScrollerRules.setPreferredSize(new Dimension(250, 100));    
-    
-    JPanel inputs    = new JPanel(new BorderLayout());
-    JPanel alphabet  = new JPanel(new BorderLayout());
-    JPanel rules     = new JPanel(new BorderLayout());
-    
-    inputs.add(new JLabel("Startsymbol"), BorderLayout.NORTH);
-    inputs.add(txtInput, BorderLayout.CENTER);    
-    
-    alphabet.add(new JLabel("Alphabet"), BorderLayout.NORTH);
-    alphabet.add(listScroller, BorderLayout.CENTER);    
-    
-    rules.add(new JLabel("Regeln"), BorderLayout.NORTH);
-    rules.add(listScrollerRules, BorderLayout.CENTER);
-    
-    setLayout(new GridLayout(0, 1));
-    
-    add(inputs);
-    add(alphabet);
-    add(rules);
-  }
-  
-  public Dimension getPreferredSize()
-  {
-    return new Dimension(250, getHeight());
-  }
 
-  public JTextArea getTxtInput()
-  {
-    return txtInput;
-  }
+    /** 
+     * This method is called from within the constructor to
+     * initialize the form.
+     */
+    private void initComponents() {
 
-  public void setTxtInput(JTextArea txtInput)
-  {
-    this.txtInput = txtInput;
-  }
+        lblStartSymbol = new javax.swing.JLabel();
+        cmbStartSymbol = new javax.swing.JComboBox();
+        lblAlphabet = new javax.swing.JLabel();
+        lblRules = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        listRules = new javax.swing.JList();
+        txtAlphabet = new javax.swing.JTextField();
+        btnAddRule = new javax.swing.JButton();
+        btnEditRule = new javax.swing.JButton();
+        btnDeleteRule = new javax.swing.JButton();
 
-  public JTextArea getTxtRules()
-  {
-    return txtRules;
-  }
+        lblStartSymbol.setText("Start symbol");
+
+        cmbStartSymbol.setFont(new java.awt.Font("Monospaced", 1, 14)); // NOI18N
+        cmbStartSymbol.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbStartSymbolItemStateChanged(evt);
+            }
+        });
+
+        lblAlphabet.setText("Alphabet");
+
+        lblRules.setText("Rules");
+
+        listRules.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
+        jScrollPane2.setViewportView(listRules);
+
+        txtAlphabet.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
+        txtAlphabet.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtAlphabetKeyTyped(evt);
+            }
+        });
+
+        btnAddRule.setText("New rule");
+        btnAddRule.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddRuleActionPerformed(evt);
+            }
+        });
+
+        btnEditRule.setText("Edit rule");
+        btnEditRule.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditRuleActionPerformed(evt);
+            }
+        });
+
+        btnDeleteRule.setText("Delete rule");
+        btnDeleteRule.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteRuleActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblRules)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblAlphabet)
+                            .addComponent(lblStartSymbol))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cmbStartSymbol, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtAlphabet, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnDeleteRule, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                    .addComponent(btnEditRule, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnAddRule, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(22, 22, 22))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblStartSymbol)
+                    .addComponent(cmbStartSymbol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtAlphabet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblAlphabet))
+                .addGap(18, 18, 18)
+                .addComponent(lblRules)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnAddRule)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnEditRule)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDeleteRule))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+    }// </editor-fold>//GEN-END:initComponents
+
+	private void txtAlphabetKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAlphabetKeyTyped
+		SwingUtilities.invokeLater(new Runnable() {
+
+			public void run() {
+				textChanged();
+			}
+		});
+	}//GEN-LAST:event_txtAlphabetKeyTyped
+
+	private void btnAddRuleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddRuleActionPerformed
+		EditRuleDialog erDlg = new EditRuleDialog();
+		erDlg.setCallback(new RuleDialogCallback() {
+			public void dialogOk(EditRuleDialog dlg) {
+				Rule newRule = new Rule(
+						Symbol.create(dlg.getInput()), 
+						new SymbolSet(dlg.getProduction()));
+				Lindenmayer.STATUS.getGrammar().addRuleToRules(newRule);
+				Lindenmayer.STATUS.fireStatusChangeEventInFuture();
+			}
+		});
+		erDlg.setModal(true);
+		erDlg.setVisible(true);
+	}//GEN-LAST:event_btnAddRuleActionPerformed
+
+	private void btnEditRuleActionPerformed(java.awt.event.ActionEvent evt) {
+		Object selectedRule = this.listRules.getSelectedValue();
+		if(selectedRule != null) {
+			final Rule oldRule = (Rule)selectedRule;
+			EditRuleDialog erDlg = new EditRuleDialog();
+			erDlg.setInput(oldRule.getInput().getText());
+			erDlg.setProduction(oldRule.getProduction().getText());
+			erDlg.setCallback(new RuleDialogCallback() {
+				public void dialogOk(EditRuleDialog dlg) {
+					Rule newRule = new Rule(
+							Symbol.create(dlg.getInput()),
+							new SymbolSet(dlg.getProduction()));
+					Lindenmayer.STATUS.getGrammar().removeRule(oldRule);
+					Lindenmayer.STATUS.getGrammar().addRuleToRules(newRule);
+					Lindenmayer.STATUS.fireStatusChangeEventInFuture();
+				}
+			});
+
+			erDlg.setModal(true);
+			erDlg.setVisible(true);
+		}
+	}
+
+	private void btnDeleteRuleActionPerformed(java.awt.event.ActionEvent evt) {
+		Object selObj = listRules.getSelectedValue();
+		if(selObj != null && selObj instanceof Rule) {
+			Lindenmayer.STATUS.getGrammar().removeRule((Rule)selObj);
+		}
+	}
+
+	private void cmbStartSymbolItemStateChanged(java.awt.event.ItemEvent evt) {
+		Object startSymbol = this.cmbStartSymbol.getSelectedItem();
+		if(startSymbol != null && !startSymbol.equals(Lindenmayer.STATUS.getGrammar().getStartSymbol())) {
+			Lindenmayer.STATUS.getGrammar().setStartSymbol(
+					(Symbol)this.cmbStartSymbol.getSelectedItem());
+		}
+	}
+
+	private void textChanged() {
+		lastCaretPosition = this.txtAlphabet.getCaretPosition();
+		String text = this.txtAlphabet.getText();
+		Lindenmayer.STATUS.getGrammar().setAlphabet(new SymbolSet());
+		if(text != null) {
+			for(int n = 0; n < text.length(); n++) {
+				Symbol symbol = Symbol.create(Character.toString(text.charAt(n)));
+				Lindenmayer.STATUS.getGrammar().addElementToAlphabet(symbol);
+			}
+		}
+		Lindenmayer.STATUS.fireStatusChangeEventInFuture();
+	}
+
+	public void statusChanged(Status status) {
+		SymbolSet sset = status.getGrammar().getAlphabet();
+		this.cmbStartSymbol.setModel(new DefaultComboBoxModel(sset.getVariables().toArray()));
+		this.cmbStartSymbol.setSelectedItem(status.getGrammar().getStartSymbol());
+		this.txtAlphabet.setCaretPosition(lastCaretPosition);
+
+		SortedListModel listModel = new SortedListModel();
+		for(Rule rule : status.getGrammar().getRules()) {
+			listModel.add(rule);
+		}
+		this.listRules.setModel(listModel);
+	}
+
+	public void statusReset(Status status) {
+		statusChanged(status);
+		SymbolSet sset = status.getGrammar().getAlphabet();
+		this.txtAlphabet.setText(sset.toString());
+	}
+
 }

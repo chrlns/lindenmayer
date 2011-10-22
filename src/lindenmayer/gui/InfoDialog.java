@@ -15,7 +15,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package lindenmayer.gui;
 
 import java.awt.BorderLayout;
@@ -25,30 +24,28 @@ import javax.swing.JTextPane;
 
 import lindenmayer.io.Resource;
 
-public class InfoDialog extends JDialog
-{
-  
-  public InfoDialog()
-  {
-    setTitle("Info Lindenmayer");
-    setSize(500, 400);
-    Utils.centerOnScreen(this);
-    
-    JTextPane textPane = new JTextPane();
-    textPane.setContentType("text/html");
-    textPane.setText(
-      Resource.getAsString("lindenmayer/resource/text/credits.html", true));
-    textPane.setEditable(false);
-    
-    JScrollPane scrollPane = new JScrollPane(textPane);
-    getContentPane().setLayout(new BorderLayout());
-    getContentPane().add(scrollPane, BorderLayout.CENTER);
-    
-    setModal(true);
-    setVisible(true);
-    
-    scrollPane.getHorizontalScrollBar().setValueIsAdjusting(true);
-    scrollPane.getHorizontalScrollBar().setValue(0);
-  }
+@SuppressWarnings("serial")
+class InfoDialog extends JDialog {
 
+	public InfoDialog() {
+		setTitle("Info Lindenmayer");
+		setSize(500, 400);
+		Utils.centerOnScreen(this);
+
+		JTextPane textPane = new JTextPane();
+		textPane.setContentType("text/html");
+		textPane.setText(
+				Resource.getAsString("lindenmayer/resource/text/credits.html", true));
+		textPane.setEditable(false);
+
+		JScrollPane scrollPane = new JScrollPane(textPane);
+		getContentPane().setLayout(new BorderLayout());
+		getContentPane().add(scrollPane, BorderLayout.CENTER);
+
+		setModal(true);
+		setVisible(true);
+
+		scrollPane.getHorizontalScrollBar().setValueIsAdjusting(true);
+		scrollPane.getHorizontalScrollBar().setValue(0);
+	}
 }
