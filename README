@@ -13,8 +13,10 @@ To learn more about L(indenmayer)-systems please refere to Wikipedia [1].
 
 Users of Debian based distributions can use the packages provided by the authors
 PPA at launchpad, see [2].
-Currently there are no other binary releases available, so one must build the 
-program from source. This can be done either using Netbeans or Ant.
+
+Download Release 0.4.0:
+ * Source https://www.dropbox.com/s/a8ii8cpxjvw1fxg/lindenmayer-0.4.0.tar.gz
+ * Binary https://www.dropbox.com/s/a8ii8cpxjvw1fxg/lindenmayer-0.4.0.jar
 
 [2] https://launchpad.net/~cli/+archive/ppa
 
