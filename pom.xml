@@ -11,9 +11,9 @@
   <url>https://github.com/cli/lindenmayer</url>
   <dependencies>
     <dependency>
-      <groupId>commons-codec</groupId>
-      <artifactId>commons-codec</artifactId>
-      <version>1.8</version>
+      <groupId>org.jdom</groupId>
+      <artifactId>jdom-legacy</artifactId>
+      <version>1.1.3</version>
     </dependency>
   </dependencies>
   <properties>
