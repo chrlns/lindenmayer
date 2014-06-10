@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/cli/lindenmayer.svg?branch=master)](https://travis-ci.org/cli/lindenmayer)
+[![Build Status](https://drone.io/github.com/cli/lindenmayer/status.png)](https://drone.io/github.com/cli/lindenmayer/latest)
 
 Lindenmayer - L-system grammar viewer and editor
 ================================================================================
