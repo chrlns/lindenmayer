@@ -1,7 +1,7 @@
 /*
  *  Lindenmayer
  *  see AUTHORS for a list of contributors.
- * 
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -35,7 +35,7 @@ class InfoDialog extends JDialog {
 		JTextPane textPane = new JTextPane();
 		textPane.setContentType("text/html");
 		textPane.setText(
-				Resource.getAsString("lindenmayer/resource/text/credits.html", true));
+				Resource.getAsString("text/credits.html", true));
 		textPane.setEditable(false);
 
 		JScrollPane scrollPane = new JScrollPane(textPane);

@@ -19,12 +19,13 @@ package lindenmayer.grammar;
 
 /**
  * Represents a terminating symbol.
+ *
  * @author Christian Lins
  * @author Kai Ritterbusch
  */
 public class Constant extends Symbol {
 
-	public Constant(String text) {
-		super(text);
-	}
+    public Constant(String text) {
+        super(text);
+    }
 }

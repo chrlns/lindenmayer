@@ -1,7 +1,7 @@
 /*
  *  Lindenmayer
  *  see AUTHORS for a list of contributors.
- * 
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -55,15 +55,15 @@ class MenuBar extends JMenuBar {
 
 		// Load icons
 		mnuItemNew.setIcon(
-				Resource.getImage("lindenmayer/resource/gfx/document-new.png"));
+				Resource.getImage("gfx/document-new.png"));
 		mnuItemOpen.setIcon(
-				Resource.getImage("lindenmayer/resource/gfx/document-open.png"));
+				Resource.getImage("gfx/document-open.png"));
 		mnuItemSave.setIcon(
-				Resource.getImage("lindenmayer/resource/gfx/document-save.png"));
+				Resource.getImage("gfx/document-save.png"));
 		mnuItemSaveAs.setIcon(
-				Resource.getImage("lindenmayer/resource/gfx/document-save-as.png"));
+				Resource.getImage("gfx/document-save-as.png"));
 		mnuItemExit.setIcon(
-				Resource.getImage("lindenmayer/resource/gfx/system-log-out.png"));
+				Resource.getImage("gfx/system-log-out.png"));
 
 		mnuFile.add(mnuItemNew);
 		mnuFile.add(mnuItemOpen);

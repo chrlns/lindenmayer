@@ -19,52 +19,53 @@ package lindenmayer.grammar;
 
 /**
  * This class represents a symbol of an alphabet.
+ *
  * @author Christian Lins
  * @author Kai Ritterbusch
  */
 public abstract class Symbol {
 
-	public static Symbol create(String text) {
-		char c = text.charAt(0);
-		if (Character.isUpperCase(c)) {
-			return new Variable(text);
-		} else {
-			return new Constant(text);
-		}
-	}
+    public static Symbol create(String text) {
+        char c = text.charAt(0);
+        if (Character.isUpperCase(c)) {
+            return new Variable(text);
+        } else {
+            return new Constant(text);
+        }
+    }
 
-	private String text;
+    private String text;
 
-	protected Symbol(String text) {
-		assert text != null;
+    protected Symbol(String text) {
+        assert text != null;
 
-		this.text = text.trim();
-	}
+        this.text = text.trim();
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if(obj instanceof Symbol) {
-			return this.text.equals(((Symbol)obj).text);
-		} else {
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Symbol) {
+            return this.text.equals(((Symbol) obj).text);
+        } else {
+            return false;
+        }
+    }
 
-	@Override
-	public int hashCode() {
-		return this.text.hashCode();
-	}
+    @Override
+    public int hashCode() {
+        return this.text.hashCode();
+    }
 
-	@Override
-	public String toString() {
-		return this.text;
-	}
+    @Override
+    public String toString() {
+        return this.text;
+    }
 
-	public String getText() {
-		return text;
-	}
+    public String getText() {
+        return text;
+    }
 
-	public void setText(String text) {
-		this.text = text;
-	}
+    public void setText(String text) {
+        this.text = text;
+    }
 }

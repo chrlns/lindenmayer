@@ -1,7 +1,7 @@
 /*
  *  Lindenmayer
  *  see AUTHORS for a list of contributors.
- * 
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -40,9 +40,9 @@ import lindenmayer.io.Resource;
 class ToolBar extends JToolBar implements StatusChangeListener {
 
 	private static final ImageIcon IMG_PLAY =
-			Resource.getImage("lindenmayer/resource/gfx/media-playback-start.png");
+			Resource.getImage("gfx/media-playback-start.png");
 	private static final ImageIcon IMG_PAUSE =
-			Resource.getImage("lindenmayer/resource/gfx/media-playback-pause.png");
+			Resource.getImage("gfx/media-playback-pause.png");
 
 	private JButton btnOpen = new JButton();
 	private JButton btnSave = new JButton();
@@ -58,14 +58,14 @@ class ToolBar extends JToolBar implements StatusChangeListener {
 		setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
 		// Set icons
-		btnOpen.setIcon(Resource.getImage("lindenmayer/resource/gfx/document-open.png"));
-		btnSave.setIcon(Resource.getImage("lindenmayer/resource/gfx/document-save.png"));
-		btnRefresh.setIcon(Resource.getImage("lindenmayer/resource/gfx/view-refresh.png"));
+		btnOpen.setIcon(Resource.getImage("gfx/document-open.png"));
+		btnSave.setIcon(Resource.getImage("gfx/document-save.png"));
+		btnRefresh.setIcon(Resource.getImage("gfx/view-refresh.png"));
 		btnStart.setIcon(IMG_PLAY);
-		btnNext.setIcon(Resource.getImage("lindenmayer/resource/gfx/media-seek-forward.png"));
-		btnPrevious.setIcon(Resource.getImage("lindenmayer/resource/gfx/media-seek-backward.png"));
-		btnZoomIn.setIcon(Resource.getImage("lindenmayer/resource/gfx/list-add.png"));
-		btnZoomOut.setIcon(Resource.getImage("lindenmayer/resource/gfx/list-remove.png"));
+		btnNext.setIcon(Resource.getImage("gfx/media-seek-forward.png"));
+		btnPrevious.setIcon(Resource.getImage("gfx/media-seek-backward.png"));
+		btnZoomIn.setIcon(Resource.getImage("gfx/list-add.png"));
+		btnZoomOut.setIcon(Resource.getImage("gfx/list-remove.png"));
 
 		// Set tooltips
 		btnOpen.setToolTipText(Lang.get(1)); // Open grammar...
