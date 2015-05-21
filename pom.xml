@@ -39,7 +39,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>lindenmayer.Lindenmayer</mainClass>
+              <mainClass>me.lins.lindenmayer.Lindenmayer</mainClass>
             </manifest>
           </archive>
         </configuration>
